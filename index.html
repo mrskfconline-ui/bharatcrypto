@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BharatCrypto - Indian Crypto Investment Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-bg"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-coins"></i>
+                <span>Bharat<span class="highlight">Crypto</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#investment">Invest</a>
+                <a href="#trading">Live Trading</a>
+                <a href="#plans">Plans</a>
+                <a href="#about">About</a>
+                <button id="navAuthBtn" class="btn-primary" onclick="showAuthModal()">Sign In</button>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-shield-alt"></i> RBI Registered • SEBI Compliant
+            </div>
+            <h1>India's #1 Crypto<br>Investment Platform</h1>
+            <p>Join 2.5M+ Indians earning daily profits through automated crypto trading. Get <span class="highlight-text">$100 Free Bonus</span> on signup!</p>
+            <div class="hero-buttons">
+                <button class="btn-glow" onclick="showAuthModal()">
+                    <i class="fas fa-gift"></i> Claim $100 Bonus
+                </button>
+                <button class="btn-outline" onclick="document.getElementById('investment').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-chart-line"></i> Start Investing
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value" id="totalUsers">2,543,891</div>
+                    <div class="stat-label">Active Investors</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">$3.8B+</div>
+                    <div class="stat-label">Total Invested</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="totalPaid">$892M+</div>
+                    <div class="stat-label">Profits Paid</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="crypto-orb">
+                <div class="orb-ring"></div>
+                <div class="orb-ring"></div>
+                <div class="orb-ring"></div>
+                <i class="fab fa-bitcoin"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="ticker">
+            <!-- Dynamic ticker items -->
+        </div>
+    </div>
+
+    <!-- Investment Dashboard (Visible when logged in) -->
+    <section id="dashboard" class="dashboard-section" style="display:none;">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2><i class="fas fa-tachometer-alt"></i> Your Dashboard</h2>
+                <button class="btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dash-card balance-card">
+                    <div class="card-icon"><i class="fas fa-wallet"></i></div>
+                    <div class="card-info">
+                        <span class="card-label">Total Balance</span>
+                        <span class="card-value" id="totalBalance">$0.00</span>
+                    </div>
+                </div>
+                <div class="dash-card profit-card">
+                    <div class="card-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="card-info">
+                        <span class="card-label">Total Profit</span>
+                        <span class="card-value positive" id="totalProfit">$0.00</span>
+                    </div>
+                </div>
+                <div class="dash-card bonus-card">
+                    <div class="card-icon"><i class="fas fa-gift"></i></div>
+                    <div class="card-info">
+                        <span class="card-label">Bonus Balance</span>
+                        <span class="card-value highlight-val" id="bonusBalance">$0.00</span>
+                    </div>
+                </div>
+                <div class="dash-card invested-card">
+                    <div class="card-icon"><i class="fas fa-lock"></i></div>
+                    <div class="card-info">
+                        <span class="card-label">Active Investment</span>
+                        <span class="card-value" id="activeInvestment">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Plans -->
+    <section id="plans" class="plans-section">
+        <div class="container">
+            <h2 class="section-title">Investment <span>Plans</span></h2>
+            <p class="section-subtitle">Choose your plan and start earning 10% daily profit</p>
+            <div class="plans-grid" id="plansGrid">
+                <!-- Dynamic plan cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Invest Section -->
+    <section id="investment" class="invest-section">
+        <div class="container">
+            <h2 class="section-title">Make an <span>Investment</span></h2>
+            <p class="section-subtitle">Minimum $1,000 - Maximum $25,000 | 10% Daily Profit</p>
+            <div class="invest-card" id="investFormContainer">
+                <div class="invest-form">
+                    <div class="amount-presets">
+                        <button class="preset-btn" onclick="setAmount(1000)">$1,000</button>
+                        <button class="preset-btn" onclick="setAmount(5000)">$5,000</button>
+                        <button class="preset-btn" onclick="setAmount(10000)">$10,000</button>
+                        <button class="preset-btn" onclick="setAmount(15000)">$15,000</button>
+                        <button class="preset-btn" onclick="setAmount(20000)">$20,000</button>
+                        <button class="preset-btn" onclick="setAmount(25000)">$25,000</button>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-dollar-sign"></i> Investment Amount (USD)</label>
+                        <input type="number" id="investAmount" placeholder="Enter amount ($1000 - $25000)" min="1000" max="25000" step="100">
+                    </div>
+                    <div class="profit-preview" id="profitPreview">
+                        <div class="preview-item">
+                            <span>Daily Profit (10%):</span>
+                            <strong id="dailyProfit">$0.00</strong>
+                        </div>
+                        <div class="preview-item">
+                            <span>Weekly Profit:</span>
+                            <strong id="weeklyProfit">$0.00</strong>
+                        </div>
+                        <div class="preview-item">
+                            <span>Monthly Profit:</span>
+                            <strong id="monthlyProfit">$0.00</strong>
+                        </div>
+                    </div>
+                    <button class="btn-glow full-width" id="investBtn" onclick="makeInvestment()">
+                        <i class="fas fa-rocket"></i> Invest Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Trading Section -->
+    <section id="trading" class="trading-section">
+        <div class="container">
+            <h2 class="section-title">Live Trading <span>Terminal</span></h2>
+            <p class="section-subtitle">Real-time automated trading with 10% profit distribution</p>
+            <div class="trading-terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span>BharatCrypto AI Trading Engine v3.0</span>
+                </div>
+                <div class="terminal-body" id="tradingLog">
+                    <!-- Dynamic trading logs -->
+                </div>
+                <div class="terminal-stats">
+                    <div class="tstat">
+                        <span>Active Trades</span>
+                        <strong id="activeTrades">247</strong>
+                    </div>
+                    <div class="tstat">
+                        <span>Success Rate</span>
+                        <strong class="positive">98.7%</strong>
+                    </div>
+                    <div class="tstat">
+                        <span>Today's Volume</span>
+                        <strong>$12.4M</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Payouts -->
+    <section class="payouts-section">
+        <div class="container">
+            <h2 class="section-title">Recent <span>Payouts</span></h2>
+            <div class="payouts-table-wrap">
+                <table class="payouts-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payoutsBody">
+                        <!-- Dynamic payouts -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+                <button class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+            <div class="tab-content" id="loginTab">
+                <h3>Welcome Back!</h3>
+                <p>Sign in to your account</p>
+                <div class="input-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <div class="error-msg" id="loginError"></div>
+                <button class="btn-glow full-width" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </div>
+            <div class="tab-content" id="signupTab" style="display:none;">
+                <h3>Create Account</h3>
+                <p>Get <span class="highlight-text">$100 Free Bonus</span> on signup!</p>
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter your full name">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create password (min 6 chars)">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Confirm Password</label>
+                    <input type="password" id="signupConfirm" placeholder="Confirm your password">
+                </div>
+                <div class="bonus-notice">
+                    <i class="fas fa-gift"></i> You'll receive <strong>$100 USD</strong> bonus instantly!
+                </div>
+                <div class="error-msg" id="signupError"></div>
+                <button class="btn-glow full-width" onclick="signup()">
+                    <i class="fas fa-user-plus"></i> Create Account & Claim $100
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Transfer Modal -->
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeTransferModal()">&times;</button>
+            <h3><i class="fas fa-paper-plane"></i> Transfer Funds</h3>
+            <p>Minimum transfer: <strong>$500 USD</strong></p>
+            <div class="input-group">
+                <label><i class="fas fa-dollar-sign"></i> Amount (USD)</label>
+                <input type="number" id="transferAmount" placeholder="Min $500" min="500" step="100">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-wallet"></i> Wallet Address</label>
+                <input type="text" id="transferWallet" placeholder="Enter crypto wallet address">
+            </div>
+            <div class="error-msg" id="transferError"></div>
+            <button class="btn-glow full-width" onclick="transferFunds()">
+                <i class="fas fa-paper-plane"></i> Transfer Now
+            </button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-coins"></i> BharatCrypto
+                    <p>India's most trusted crypto investment platform. Automated trading with guaranteed 10% daily returns.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#plans">Plans</a>
+                    <a href="#investment">Invest</a>
+                    <a href="#trading">Trading</a>
+                </div>
+                <div class="footer-contact">
+                    <h4>24/7 Support</h4>
+                    <p><i class="fas fa-envelope"></i> support@bharatcrypto.com</p>
+                    <p><i class="fas fa-phone"></i> +91 1800-123-4567</p>
+                    <p><i class="fas fa-map-marker"></i> Mumbai, India</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BharatCrypto. All rights reserved. | Licensed & Regulated</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
